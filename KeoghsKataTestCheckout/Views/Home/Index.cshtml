@@ -3,10 +3,75 @@
 }
 
 <div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+    <h1>PRODUCTS</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Id</th>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model.ProductViewModel.Products)
+            {
+                <tr>
+                    <th scope="row">@product.Id</th>
+                    <td>@product.Id</td>
+                    <td>@product.Name</td>
+                    <td>@product.Description</td>
+                    <td>@product.Price</td>
+                    <td>
+                        @using (Html.BeginForm("AddToBasket", "Home", new { productId = product.Id }, FormMethod.Post))
+                        {
+                            <button type="submit"> Add to cart</button>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
+@if (Session["basket"] != null)
+{
+    <div class="jumbotron">
+        <h1>BASKET</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Id</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Product product in (List<Product>)Session["basket"])
+                {
+                    <tr>
+                        <th scope="row">@product.Id</th>
+                        <td>@product.Id</td>
+                        <td>@product.Name</td>
+                        <td>@product.Description</td>
+                        <td>@product.Price</td>
+                        <td>@product.Amount</td>
+                    </tr>
+                }
+                @if (Model.BasketViewModel.TotalPrice != null)
+                {
+                    <tr>
+                        <th scope="row">Total Price</th>
+                        <td>@Model.BasketViewModel.TotalPrice</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
 
 <div class="row">
     <div class="col-md-4">
